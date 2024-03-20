@@ -1,6 +1,6 @@
 # Analysis
 
-| Meta-data                                        | Value           |
+| Meta-data                                        |                 |
 | ------------------------------------------------ | --------------- |
 | **Specification language**                       | `EN`            |
 | **Solution / Application language**              | `SK`            |
