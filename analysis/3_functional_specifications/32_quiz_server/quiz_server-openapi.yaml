@@ -1,0 +1,377 @@
+openapi: 3.0.3
+info: 
+  title: Quiz Server
+  description: |
+    Quiz Server API - DEMO.
+  version: 1.0.2
+
+servers:
+  - url: https://ec2-3-76-40-32.eu-central-1.compute.amazonaws.com:{port}
+    description: The Quiz API server
+    variables:
+      port:
+        enum:
+          - '8443'
+        default: '8443'
+
+tags:
+  - name: Quiz
+    description: |
+      Quiz related endpoints.
+  - name: Leaderboard
+    description: |
+      Leaderboard related endpoints.
+
+security:
+  - AccessToken: []
+
+paths:
+
+  /question:
+    get:
+      tags:
+      - Quiz
+      security:
+        - AccessToken:
+          - api:readQuestions
+      summary: Start the quiz by retrieving question with list of options.
+      responses:
+        '200':
+          $ref: "#/components/responses/QuestionResponse"
+        default:
+          description: Unexpected error
+          content:
+            application/json: {}
+
+  /answer-and-next:
+    post:
+      tags:
+      - Quiz
+      security:
+        - AccessToken:
+          - api:writeAnswers
+      summary: Submit the answer and receive answer evaluation along with next question.
+      requestBody:
+        $ref: "#/components/requestBodies/AnswerRequest"
+      responses:
+        '200':
+          $ref: "#/components/responses/AnswerAndNextResponse"
+        '400':
+          $ref: "#/components/responses/AnswerAndNextErrorResponse"
+        default:
+          description: Unexpected error
+          content:
+            application/json: {}
+
+  /status:
+    get:
+      tags:
+      - Quiz
+      security:
+        - AccessToken:
+          - api:readStatus
+      summary: Retrieve personalised overview of the quiz progress and evaluation.
+      responses:
+        '200':
+          $ref: "#/components/responses/StatusResponse"
+        default:
+          description: Unexpected error
+          content:
+            application/json: {}
+
+  /report:
+    get:
+      tags:
+      - Leaderboard
+      security: []
+      summary: Retrieve current ranking of Quiz contestants.
+      responses:
+        #'200':
+        #  $ref: "#/components/responses/ReportResponse"
+        '404':
+          description: ⚠️ API does not provide this feature yet.
+        default:
+          description: Unexpected error
+          content:
+            application/json: {}
+
+components:
+
+  securitySchemes:
+    AccessToken:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
+  schemas:
+
+    Option:
+      type: object
+      description: |
+        Option resource representing one multiple-choice item.
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+      required:
+        - id
+        - name
+          
+    Question:
+      type: object
+      description: |
+        Quiz Question resource with the question wording and its options.
+      properties:
+        id:
+          type: string
+        description:
+          type: string
+        options:
+          type: array
+          items:
+            $ref: "#/components/schemas/Option"
+      required:
+        - id
+        - description
+        - options
+
+    AnswerEntry:
+      type: object
+      description: |
+        Question Answer resource submitted by the user.
+      properties:
+        questionId:
+          type: string
+        selectedOptionId:
+          type: string
+      required:
+        - questionId
+        - selectedOptionId
+
+    Answer:
+      description: |
+        Question Answer resource representing the evaluation of user answer.
+      allOf:
+        - type: object
+          properties:
+            id:
+              type: string
+          required:
+            - id
+        - $ref: "#/components/schemas/AnswerEntry"
+        - type: object
+          properties:
+            correctOptionId:
+              type: string
+          required:
+            - correctOptionId
+
+    AnswerAndNextQuestion:
+      type: object
+      description: |
+        Question Feedback resource decorating the Answer resource with next Question resource.
+      allOf:
+        - $ref: "#/components/schemas/Answer"
+      properties:
+        nextQuestion:
+          $ref: "#/components/schemas/Question"
+
+    Status:
+      type: object
+      description: |
+        Quiz Status resource representing quiz progress and evaluation.
+      properties:
+        answeredQuestions:
+          type: integer
+        totalQuestions:
+          type: integer
+        correctAnswers:
+          type: integer
+        quizStartedAt:
+          type: string
+          format: date-time
+        quizEndedAt:
+          type: string
+          format: date-time
+        answers:
+          type: array
+          items:
+            $ref: "#/components/schemas/Answer"
+      required:
+        - answeredQuestions
+        - totalQuestions
+        - correctAnswers
+
+    Report:
+      type: object
+      description: |
+        Quiz Report resource representing current ranking of its contestants.
+
+    Error:
+      type: object
+      description: |
+        Generic error message object
+      properties:
+        message:
+          type: string
+      required:
+        - message
+  
+  requestBodies:
+
+    AnswerRequest:
+      description: |
+        Question Answer resource submitted by the user.
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/AnswerEntry"
+          examples:
+            answerRequestExample:
+              $ref: "#/components/examples/AnswerRequestExample"
+  
+  responses:
+
+    QuestionResponse:
+      description: |
+        Quiz Question resource with the question wording and its options.
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Question"
+          examples:
+            contactResponseExample:
+              $ref: "#/components/examples/QuestionResponseExample"
+
+    AnswerAndNextResponse:
+      description: |
+        Question Feedback resource decorating the Answer resource with next Question resource.
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/AnswerAndNextQuestion"
+          examples:
+            contactResponseExample:
+              $ref: "#/components/examples/AnswerResponseExample"
+
+    AnswerAndNextErrorResponse:
+      description: |
+        Error message object
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Error"
+          examples:
+            answerAndNextErrorExample:
+              $ref: "#/components/examples/AnswerAndNextErrorResponseExample"
+
+    StatusResponse:
+      description: |
+        Quiz Status resource representing quiz progress and evaluation.
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Status"
+          examples:
+            contactResponseExample:
+              $ref: "#/components/examples/StatusResponseExample"
+
+    ReportResponse:
+      description: |
+        Quiz Report resource representing current ranking of its contestants.
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Report"
+          examples:
+            contactResponseExample:
+              $ref: "#/components/examples/ReportResponseExample"
+  
+  examples:
+
+    QuestionResponseExample:
+      value: {
+        "id": "0",
+        "description": "What Elvish phrase does Frodo Baggins say when he offers the One Ring to Galadriel, indicating his willingness to give it up?",
+        "options": [
+          {
+            "id": "0",
+            "name": "Namárië"
+          },
+          {
+            "id": "1",
+            "name": "Elen síla lúmenn' omentielvo"
+          },
+          {
+            "id": "2",
+            "name": "Amin mela lle"
+          },
+          {
+            "id": "3",
+            "name": "Nai hiruvalyë Valimar"
+          }
+        ]
+      }
+
+    AnswerRequestExample:
+      value: {
+        "questionId": "0",
+        "selectedOptionId": "0"
+      }
+
+    AnswerResponseExample:
+      value: {
+        "id": "0",
+        "questionId": "0",
+        "selectedOptionId": "0",
+        "correctOptionId": "0",
+        "nextQuestion": {
+          "id": "1",
+          "description": "In \"The Lord of the Rings,\" who forges the three Elven Rings of Power?",
+          "options": [
+            {
+              "id": "0",
+              "name": "Sauron"
+            },
+            {
+              "id": "1",
+              "name": "Celebrimbor"
+            },
+            {
+              "id": "2",
+              "name": "Elrond"
+            },
+            {
+              "id": "3",
+              "name": "Galadriel"
+            }
+          ]
+        }
+      }
+
+    AnswerAndNextErrorResponseExample:
+      value: {
+        "message": "INVALID_ANSWER"
+      }
+
+    StatusResponseExample:
+      value: {
+        "answeredQuestions": 1,
+        "totalQuestions": 5,
+        "correctAnswers": 1,
+        "answers": [
+          {
+            "id": "0",
+            "questionId": "0",
+            "selectedOptionId": "0",
+            "correctOptionId": "0",
+          }
+        ]
+      }
+
+    ReportResponseExample:
+      value: {
+
+      }

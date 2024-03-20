@@ -1,0 +1,112 @@
+questionnaire:
+  questions:
+    - id: 0
+      name: ageOfSlovenskaSporitelna
+      order: 0
+      title: Koľko rokov má Slovenská sporiteľňa, ako dlho už fungujeme na našom trhu?
+      answers:
+        - id: 0
+          name: oneHundredNinetyNineYears
+          title: 49 rokov
+          order: 0
+        - id: 1
+          name: oneHundredNinetyNineYears
+          title: 79 rokov
+          order: 1
+        - id: 2
+          name: oneHundredNinetyNineYears
+          title: 159 rokov
+          order: 2
+        - id: 3
+          name: oneHundredNinetyNineYears
+          title: 199 rokov
+          order: 3
+      rightAnswer: 3
+    - id: 1
+      name: employerRanking
+      order: 1
+      title: Aké miesto sme získali v ankete Najzamestnávateľ v poslednom ročníku?
+      answers:
+        - id: 0
+          name: sharkyPlace
+          title: -1. miesto
+          order: 0
+        - id: 1
+          name: firstPlace
+          title: 1. miesto
+          order: 1
+        - id: 2
+          name: primePlace
+          title: 23. miesto
+          order: 2
+        - id: 3
+          name: tomasPlace
+          title: 38. miesto
+          order: 3
+      rightAnswer: 1
+    - id: 2
+      name: numberOfEmployees
+      order: 2
+      title: Koľko nás je v Slovenskej sporiteľni. Skús trafiť najbližšie číslo
+      answers:
+        - id: 0
+          name: threeThousandFiveHundredEmployees
+          title: 1500 zamestnancov
+          order: 0
+        - id: 1
+          name: threeThousandFiveHundredEmployees
+          title: 2500 zamestnancov
+          order: 1
+        - id: 2
+          name: threeThousandFiveHundredEmployees
+          title: 3500 zamestnancov
+          order: 2
+        - id: 3
+          name: threeThousandFiveHundredEmployees
+          title: 4500 zamestnancov
+          order: 3
+      rightAnswer: 2
+    - id: 3
+      name: aiBankerName
+      order: 3
+      title: Ako sa volá naša virtuálna bankárka založená na umelej inteligencii?
+      answers:
+        - id: 0
+          name: mila
+          title: Mila
+          order: 0
+        - id: 1
+          name: vesna
+          title: Vesna
+          order: 1
+        - id: 2
+          name: eva
+          title: Eva
+          order: 2
+        - id: 3
+          name: stela
+          title: Stela
+          order: 3
+      rightAnswer: 1
+    - id: 4
+      name: averageWorkingYears
+      order: 4
+      title: Ako dlho u nás v priemere pracujú naši kolegovia a kolegyne?
+      answers:
+        - id: 0
+          name: fiveYears
+          title: 5 rokov
+          order: 0
+        - id: 1
+          name: nineYears
+          title: 9 rokov
+          order: 1
+        - id: 2
+          name: thirteenYears
+          title: 13 rokov
+          order: 2
+        - id: 3
+          name: seventeenYears
+          title: 17 rokov
+          order: 3
+      rightAnswer: 2

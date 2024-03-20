@@ -1,0 +1,251 @@
+{
+	"info": {
+		"_postman_id": "d2ea9f15-20a5-4546-bac4-e771f198bb64",
+		"name": "Quiz DEMO - All Heads 2024",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "29950730"
+	},
+	"item": [
+		{
+			"name": "/authorize",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"let response = JSON.parse(responseBody);",
+							"",
+							"pm.collectionVariables.set(\"token\", response.access_token);"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Accept-Encoding",
+						"value": "br,deflate,gzip,x-gzip",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"name\": \"{{$randomUserName}}\",\n    \"email\": \"{{$randomEmail}}\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{server}}:{{port}}/authorize",
+					"host": [
+						"{{server}}"
+					],
+					"port": "{{port}}",
+					"path": [
+						"authorize"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/question",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"let response = JSON.parse(responseBody);",
+							"",
+							"pm.collectionVariables.set(\"lastQuestionId\", response.id);",
+							"pm.collectionVariables.set(\"selectedOptionId\", response.options[_.random(0, response.options.length-1)].id);"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{server}}:{{port}}/question",
+					"host": [
+						"{{server}}"
+					],
+					"port": "{{port}}",
+					"path": [
+						"question"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/answer-and-next",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"let response = JSON.parse(responseBody);",
+							"",
+							"if (typeof response.nextQuestion == 'undefined' || response.nextQuestion == null)",
+							"        console.log(\"There is no next question object.\");",
+							"else {",
+							"    pm.collectionVariables.set(\"lastQuestionId\", response.nextQuestion.id);",
+							"    pm.collectionVariables.set(\"selectedOptionId\", response.nextQuestion.options[_.random(0, response.nextQuestion.options.length-1)].id);",
+							"}"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"questionId\": \"{{lastQuestionId}}\",\n  \"selectedOptionId\": \"{{selectedOptionId}}\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{server}}:{{port}}/answer-and-next",
+					"host": [
+						"{{server}}"
+					],
+					"port": "{{port}}",
+					"path": [
+						"answer-and-next"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/status",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{server}}:{{port}}/status",
+					"host": [
+						"{{server}}"
+					],
+					"port": "{{port}}",
+					"path": [
+						"status"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "server",
+			"value": "https://ec2-3-76-40-32.eu-central-1.compute.amazonaws.com",
+			"type": "string"
+		},
+		{
+			"key": "port",
+			"value": "8443",
+			"type": "string"
+		},
+		{
+			"key": "token",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "lastQuestionId",
+			"value": ""
+		},
+		{
+			"key": "selectedOptionId",
+			"value": ""
+		}
+	]
+}
