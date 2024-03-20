@@ -1,0 +1,10 @@
+@use 'utils';
+@forward '../../../../node_modules/vuetify/settings' with (
+    $body-font-family: utils.$body-font-family,
+    $app-bar-background: utils.color('surface-brand'),
+    $app-bar-color: utils.color('surface-primary'),
+    $button-height: 56,
+    $button-font-weight: 500,
+    $border-radius-root: 8px,
+    $button-text-transform: none,
+);

@@ -1,0 +1,56 @@
+@use 'vuetify-settings';
+@use '../../../../node_modules/vuetify';
+@use 'utils';
+
+@font-face {
+    font-family: 'Inter';
+    src: url('@/library/assets/fonts/Inter-Light.woff2') format('woff2');
+    font-weight: 300;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Inter';
+    src: url('@/library/assets/fonts/Inter-Regular.woff2') format('woff2');
+    font-weight: 400;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Inter';
+    src: url('@/library/assets/fonts/Inter-Medium.woff2') format('woff2');
+    font-weight: 500;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Inter';
+    src: url('@/library/assets/fonts/Inter-Semibold.woff2') format('woff2');
+    font-weight: 600;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Inter';
+    src: url('@/library/assets/fonts/Inter-Bold.woff2') format('woff2');
+    font-weight: 700;
+    font-style: normal;
+}
+
+html, body {
+    min-height: 100vh;
+    background: utils.color('surface-background');
+    font-family: utils.$body-font-family;
+
+    * {
+        font-family: utils.$body-font-family !important;
+    }
+
+    &.page-variant--info {
+        background: utils.color('surface-brand');
+    }
+
+    &.page-variant--default {
+        background: utils.color('surface-background');
+    }
+}

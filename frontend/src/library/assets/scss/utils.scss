@@ -1,0 +1,15 @@
+@use 'sass:math';
+
+@function color($colorName, $opacity: 1) {
+    @return rgba(var(--v-theme-#{$colorName}), $opacity);
+}
+
+@function toRem($pixels) {
+    @return #{math.div($pixels, 16)}rem;
+}
+
+@function gvar($varName) {
+    @return var(--v-#{$varName});
+}
+
+$body-font-family: unquote("'Inter', sans-serif");
