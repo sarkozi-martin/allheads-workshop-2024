@@ -9,12 +9,15 @@
 | **Contributors** - UX Design & FE Development    | @Martin Štefek  |
 
 ## Business Assignment
+[Business Assignment](1_business_assignment/business_assignment.md)
 
 ## Solution Design
 
 ### Solution Architecture
+[Solution Architecture](2_solution_design/21_solution_architecture/solution_architecture.md)
 
 ### Impact Analysis
+[Impact Analysis](2_solution_design/22_impact_analysis/impact_analysis.md)
 
 ## Infrastructure and Deployment
 The application will be deployed on AWS, utilizing services like EC2, RDS, and S3, with a CI/CD pipeline set up for automatic deployment and testing.
